@@ -1,17 +1,21 @@
 from collections import deque
 class Solution:
     def predictPartyVictory(self, senate: str) -> str:
-        q = deque(senate)
-        while True:
-            l = q.popleft()
-            for i in range(len(q)):
-                if l != q[i]:
-                    del q[i]
-                    break
-            q.append(l)
-            if len(set(q)) == 1:
-                if q[0] == 'R':
-                    return "Radiant"
-                else:
-                    return "Dire"
-
+        n = len(senate)
+        R = deque()
+        D = deque()
+        for i in range(n):
+            if senate[i] == 'R':
+                R.append(i)
+            else:
+                D.append(i)
+        while R and D:
+            r = R.popleft()
+            d = D.popleft()
+            if r < d:
+                R.append(r+n)
+            else:
+                D.append(d+n)
+        if R:
+            return "Radiant"
+        return "Dire"
